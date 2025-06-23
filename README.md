@@ -39,3 +39,10 @@ To run on Browserbase, add your API keys to .env and change `env: "LOCAL"` to `e
 1. Add your API key to .env
 2. Change `modelName: "gpt-4o"` to `modelName: "claude-3-5-sonnet-latest"` in [stagehand.config.ts](stagehand.config.ts)
 3. Change `modelClientOptions: { apiKey: process.env.OPENAI_API_KEY }` to `modelClientOptions: { apiKey: process.env.ANTHROPIC_API_KEY }` in [stagehand.config.ts](stagehand.config.ts)
+
+4. Recording:
+
+https://github.com/user-attachments/assets/cdf7c796-d8bc-4b6a-a9af-453796890911
+
+
+   
