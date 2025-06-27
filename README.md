@@ -42,7 +42,7 @@ To run on Browserbase, add your API keys to .env and change `env: "LOCAL"` to `e
 
 4. Recording:
 
-https://github.com/user-attachments/assets/cdf7c796-d8bc-4b6a-a9af-453796890911
+
+https://github.com/user-attachments/assets/2af13ff1-518d-44a4-b6be-bcc3ac1289a2
 
 
-   
