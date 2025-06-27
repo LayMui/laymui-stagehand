@@ -30,14 +30,14 @@ async function main({
   stagehand: Stagehand; // Stagehand instance
 }) {
   // Navigate to a URL
-  await page.goto("https://docs.stagehand.dev/reference/introduction");
+  await page.goto("https://todomvc.com/examples/react/dist/");
 
   // Use act() to take actions on the page
-  await page.act("Click the search box");
+  await page.act("Click the What needs to be done?");
 
   // Use observe() to plan an action before doing it
   const [action] = await page.observe(
-    "Type 'Tell me in one sentence why I should use Stagehand' into the search box",
+    "Type 'Buy soypro instead of milk' into the input field box",
   );
   await drawObserveOverlay(page, [action]); // Highlight the search box
   await page.waitForTimeout(1_000);
@@ -46,20 +46,20 @@ async function main({
 
   // For more on caching, check out our docs: https://docs.stagehand.dev/examples/caching
   await page.waitForTimeout(1_000);
-  await actWithCache(page, "Click the suggestion to use AI");
+  await actWithCache(page, "Click the React Source");
   await page.waitForTimeout(5_000);
-
+  await page.act("Scrolls down to the text readme.md of the browser window")
   // Use extract() to extract structured data from the page
   const { text } = await page.extract({
     instruction:
-      "extract the text of the AI suggestion from the search results",
+      "extract the text of the React Source from the navigation results",
     schema: z.object({
       text: z.string(),
     }),
   });
   stagehand.log({
     category: "create-browser-app",
-    message: `Got AI Suggestion`,
+    message: `Got TodoMVC: React`,
     auxiliary: {
       text: {
         value: text,
