@@ -25,58 +25,43 @@ async function main({
   context,
   stagehand,
 }: {
-  page: Page; // Playwright Page with act, extract, and observe methods
-  context: BrowserContext; // Playwright BrowserContext
-  stagehand: Stagehand; // Stagehand instance
+  page: Page;
+  context: BrowserContext;
+  stagehand: Stagehand;
 }) {
-  // Navigate to a URL
-  await page.goto("https://todomvc.com/examples/react/dist/");
-
-  // Use act() to take actions on the page
-  await page.act("Click the What needs to be done?");
-
-  // Use observe() to plan an action before doing it
-  const [action] = await page.observe(
-    "Type 'Buy soypro instead of milk' into the input field box",
-  );
-  await drawObserveOverlay(page, [action]); // Highlight the search box
-  await page.waitForTimeout(1_000);
-  await clearOverlays(page); // Remove the highlight before typing
-  await page.act(action); // Take the action
-
-  // For more on caching, check out our docs: https://docs.stagehand.dev/examples/caching
-  await page.waitForTimeout(1_000);
-  await actWithCache(page, "Click the React Source");
-  await page.waitForTimeout(5_000);
-  await page.act("Scrolls down to the text readme.md of the browser window")
-  // Use extract() to extract structured data from the page
-  const { text } = await page.extract({
-    instruction:
-      "extract the text of the React Source from the navigation results",
-    schema: z.object({
-      text: z.string(),
-    }),
+  // Navigate to the initial URL
+  await page.goto("https://selectorshub.com/xpath-practice-page/", { 
+    waitUntil: 'domcontentloaded', 
+    timeout: 60_000 
   });
-  stagehand.log({
-    category: "create-browser-app",
-    message: `Got TodoMVC: React`,
-    auxiliary: {
-      text: {
-        value: text,
-        type: "string",
-      },
-    },
-  });
-  stagehand.log({
-    category: "create-browser-app",
-    message: `Metrics`,
-    auxiliary: {
-      metrics: {
-        value: JSON.stringify(stagehand.metrics),
-        type: "object",
-      },
-    },
-  });
+
+  // Scroll to and click the iframe trigger link
+  const [actionPreview] = await page.observe("Scroll to the link text 'Click to practice iframe inside shadow dom scenario' so it becomes visible on the screen");
+
+
+  /** actionPreview is a JSON-ified version of a Playwright action:
+  {
+    description: "The quickstart link",
+    action: "click",
+    selector: "/html/body/div[1]/div[1]/a",
+    arguments: [],
+  }
+  **/
+  
+  // NO LLM INFERENCE when calling act on the preview
+  await page.act(actionPreview)
+   
+  await page.waitForLoadState('domcontentloaded', { timeout: 100_000 }); // 60 seconds
+
+  const iframeElement = page.locator("//iframe[@id='pact']");
+  await iframeElement.waitFor({ state: 'visible', timeout: 60_000 });
+
+
+  await page.locator("iframe#pact").waitFor({ state: 'visible' });
+  const iframe = page.frameLocator("iframe#pact");
+
+  await iframe.locator("#tea").fill("Chamoment", { timeout: 60_000 });
+  
 }
 
 /**
