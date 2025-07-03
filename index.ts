@@ -149,16 +149,15 @@ async function main({
   try {
     // Navigate to the initial URL
     addStep(report, "Navigate to initial URL");
-    await page.goto("https://selectorshub.com/xpath-practice-page/", {
+    await page.goto("https://selectorshub.com/shadow-dom-in-iframe/", {
       waitUntil: 'domcontentloaded',
       timeout: 60_000
     });
     completeStep(report, 0, 'success', 'Successfully navigated to xpath practice page');
 
-    // Scroll to and click the iframe trigger link
-    addStep(report, "Find and click iframe trigger link");
-      // Scroll to and click the iframe trigger link
-  const [actionPreview] = await page.observe("Scroll to the link text 'Click to practice iframe inside shadow dom scenario' and click on it");
+
+    
+    const [actionPreview] = await page.observe("Find the input text field 'Do you love tea?' and fill it with 'Chamomile'");
 
 
 
@@ -175,60 +174,53 @@ async function main({
     await page.act(actionPreview);
 
 
-    completeStep(report, 1, 'success', 'Successfully clicked iframe trigger link');
-
-    // Robust page loading
-    addStep(report, "Wait for page to be ready");
-    await waitForPageReady(page);
-    completeStep(report, 2, 'success', 'Page loaded successfully');
-
+    
     // Enhanced iframe interaction
-    addStep(report, "Interact with iframe element");
-
+    // addStep(report, "Interact with iframe element");
 
  // Wait for iframe to be visible with better error handling
-    console.log("Waiting for iframe to be visible...");
-    const iframeElement = page.locator("//iframe[@id='pact']");
-    await iframeElement.waitFor({ state: 'visible', timeout: 60_000 });
-    console.log("Iframe is visible");
-    // Wait for iframe content to load
-    await page.waitForFunction(
-      () => {
-        const iframe = document.querySelector('iframe#pact') as HTMLIFrameElement;
-        return iframe && iframe.contentDocument && iframe.contentDocument.readyState === 'complete';
-      },
-      { timeout: 60_000 }
-    );
-    console.log("Iframe content loaded");
+    // console.log("Waiting for iframe to be visible...");
+    // const iframeElement = page.locator("//iframe[@id='pact']");
+    // await iframeElement.waitFor({ state: 'visible', timeout: 60_000 });
+    // console.log("Iframe is visible");
+    // // Wait for iframe content to load
+    // await page.waitForFunction(
+    //   () => {
+    //     const iframe = document.querySelector('iframe#pact') as HTMLIFrameElement;
+    //     return iframe && iframe.contentDocument && iframe.contentDocument.readyState === 'complete';
+    //   },
+    //   { timeout: 60_000 }
+    // );
+    // console.log("Iframe content loaded");
 
     // Additional wait for iframe to be fully ready
-    await page.locator("iframe#pact").waitFor({ state: 'visible' });
-    const iframe = page.frameLocator("iframe#pact");
+    // await page.locator("iframe#pact").waitFor({ state: 'visible' });
+    // const iframe = page.frameLocator("iframe#pact");
 
     // Wait for iframe body to be ready
-    await iframe.locator('body').waitFor({ state: 'attached', timeout: 10_000 });
-    console.log("Iframe body is ready");
+    // await iframe.locator('body').waitFor({ state: 'attached', timeout: 10_000 });
+    // console.log("Iframe body is ready");
 
     // Additional buffer for dynamic content
-    await page.waitForTimeout(2000);
+//    await page.waitForTimeout(2000);
 
     // Progressive element waiting
-    const teaElement = iframe.locator("#tea");
-    await teaElement.waitFor({ state: 'attached', timeout: 60_000 });
-    console.log("Tea element is attached");
+//    const teaElement = iframe.locator("#tea");
+ //   await teaElement.waitFor({ state: 'attached', timeout: 100_000 });
+  //  console.log("Tea element is attached");
 
-    await teaElement.waitFor({ state: 'visible', timeout: 60_000 });
-    console.log("Tea element is visible");
+   // await teaElement.waitFor({ state: 'visible', timeout: 100_000 });
+ //   console.log("Tea element is visible");
 
     // Small buffer before interaction
-    await page.waitForTimeout(500);
+   // await page.waitForTimeout(500);
 
-    await teaElement.fill("Chamoment", { timeout: 60_000 });
-    console.log("Successfully filled tea input field");
+   // await teaElement.fill("Chamoment", { timeout: 100_000 });
+  //  console.log("Successfully filled tea input field");
 
-    completeStep(report, 3, 'success', 'Successfully interacted with iframe tea element');
-    completeReport(report, 'success', 'Shadow DOM iframe test completed successfully');
-    saveReport(report);
+  //   completeStep(report, 3, 'success', 'Successfully interacted with iframe tea element');
+  //   completeReport(report, 'success', 'Shadow DOM iframe test completed successfully');
+  //   saveReport(report);
 
   } catch (error) {
     console.error("Test failed:", error);
