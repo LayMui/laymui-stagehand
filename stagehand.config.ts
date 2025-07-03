@@ -7,7 +7,9 @@ const StagehandConfig: ConstructorParams = {
   verbose: 1,
   domSettleTimeoutMs: 60_000,
 
-
+  // Enable iframe support for better iframe interactions
+  enableCaching: true,
+  
   // LLM configuration
   modelName: "anthropic/claude-3-7-sonnet-20250219",
   modelClientOptions: {
